@@ -22,7 +22,7 @@ class StocksViewModelTests: XCTestCase {
     func testInit() {
         stockRepositoryMock = StockRepositoryMock()
         viewModel = StocksViewModel(stockRepository: stockRepositoryMock)
-        XCTAssertNil(viewModel.stocks.value, "stockVM should be nil")
+        XCTAssertNil(viewModel.stocks.value, "stocks should be nil")
     }
 
     func testLoadDataWithStocksResultShouldTriggerStocksWithNotNilValues() {
@@ -76,7 +76,7 @@ class StocksViewModelTests: XCTestCase {
         }
     }
 
-    func testUpdateSearchResultsWithEmptyStringShouldTriggerStocksWithNotNilValues() {
+    func testUpdateSearchResultsWithAStringShouldTriggerStocksWithNotNilValues() {
         // Given
         stockRepositoryMock = StockRepositoryMock()
         stockRepositoryMock.stocks = [stock]
@@ -87,7 +87,7 @@ class StocksViewModelTests: XCTestCase {
 
         // then
         viewModel.stocks.bind { stocks in
-            XCTAssertNotNil(stocks, "showAlert should not be nil after excecuting it")
+            XCTAssertNotNil(stocks, "stocks should not be nil after excecuting it")
         }
 
     }
