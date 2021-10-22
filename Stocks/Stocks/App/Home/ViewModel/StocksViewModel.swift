@@ -21,6 +21,7 @@ class StocksViewModel: StocksViewModelProtocol {
     var showAlert: ((String) -> Void)?
     var stockRepository: StockRepositoryProtocol
     private(set) var stocks: Bindable<[Stock]?> = Bindable(nil)
+    private var invalidatedSearch: Bool = false
 
     init(stockRepository: StockRepositoryProtocol = StockRepository()) {
         self.stockRepository = stockRepository
@@ -34,6 +35,7 @@ class StocksViewModel: StocksViewModelProtocol {
                 self.shouldShowLoader?(false)
                 switch result {
                 case .success(let stocks):
+                    guard !self.invalidatedSearch else { return }
                     self.stocks.value = stocks
                 case .failure(let error):
                     self.showAlert?(error.localizedDescription)
@@ -44,8 +46,10 @@ class StocksViewModel: StocksViewModelProtocol {
 
     func updateSearchResults(for text: String) {
         if text.isEmpty {
+            invalidatedSearch = true
             stocks.value = nil
         } else {
+            invalidatedSearch = false
             search(by: text)
         }
     }
